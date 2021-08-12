@@ -1,25 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import React from "react";
+import Schedule from "./components/Schedule/Schedule";
+import {connect} from "react-redux";
+import {getSchedule, setDate} from "./redux/scheduleReducer";
+import 'react-calendar/dist/Calendar.css';
+import CalendarContainer from "./components/Calendar/Calendar";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const App = (props) => {
+    return (
+        <div className="App">
+            {props.date
+                ? <Schedule date={props.date}
+                            getSchedule={props.getSchedule}
+                            films={props.films}
+                            setDate={props.setDate}/>
+                : <CalendarContainer setDate={props.setDate}/>}
+        </div>
+    );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+    date: state.schedule.date,
+    films: state.schedule.films
+})
+
+export default connect(mapStateToProps, {setDate, getSchedule})(App) ;
